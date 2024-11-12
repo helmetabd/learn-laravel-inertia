@@ -1,11 +1,8 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 
 defineProps({
@@ -14,8 +11,8 @@ defineProps({
 });
 
 const form = useForm({
-    email: '',
-    password: '',
+    email: 'test@example.com',
+    password: 'password',
     remember: false,
 });
 
@@ -29,62 +26,130 @@ const submit = () => {
 };
 </script>
 
+<script>
+export default {
+    data() {
+        return {
+            togglePassword: false
+        }
+    }
+}
+</script>
+
 <template>
+
     <Head title="Log in" />
 
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
+    <div class="auth-page-wrapper pt-5">
+        <div class="auth-one-bg-position auth-one-bg" id="auth-particles">
+            <div class="bg-overlay"></div>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-            {{ status }}
+            <div class="shape">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 1440 120">
+                    <path d="M 0,36 C 144,53.6 432,123.2 720,124 C 1008,124.8 1296,56.8 1440,40L1440 140L0 140z"></path>
+                </svg>
+            </div>
         </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
-                <TextInput
-                    id="email"
-                    v-model="form.email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+        <div class="auth-page-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col col-lg-12">
+                        <div class="text-center mt-sm-5 mb-4 text-white-50">
+                            <div>
+                                <Link href="/" class="d-inline-block auth-logo">
+                                <img src="@assets/images/logo-light.png" alt="" height="20">
+                                </Link>
+                            </div>
+                            <p class="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-                <TextInput
-                    id="password"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
-                    autocomplete="current-password"
-                />
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+                <div class="row justify-content-center">
+                    <div class="col col-md-8 col-lg-6 col-xl-5">
+                        <div class="card mt-4">
+                            <div class="p-4">
+                                <div class="text-center mt-2">
+                                    <h5 class="text-primary">Welcome Back !</h5>
+                                    <p class="text-muted">Sign in to continue to Velzon.</p>
+                                </div>
+                                <div v-if="status" class="alert alert-success text-success">
+                                    {{ status }}
+                                </div>
+                                <div class="p-2 mt-3">
+                                    <form @submit.prevent="submit">
+                                        <div class="mb-3">
+                                            <label for="email">Email</label>
+                                            <input id="email" type="email" v-model="form.email" class="form-control"
+                                                autofocus placeholder="Please enter email"
+                                                :class="{ 'is-invalid': form.errors.email }" autocomplete="email">
+                                            <InputError :message="form.errors.email" />
+                                        </div>
 
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox v-model:checked="form.remember" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
-                </label>
-            </div>
+                                        <div class="mb-3">
+                                            <div class="float-end">
+                                                <Link v-if="canResetPassword" :href="route('password.request')"
+                                                    class="text-muted">Forgot
+                                                password?</Link>
+                                            </div>
+                                            <InputLabel for="password" value="Password" />
+                                            <div class="position-relative auth-pass-inputgroup mb-3">
+                                                <input :type="togglePassword ? 'text' : 'password'"
+                                                    class="form-control pe-5" placeholder="Enter password"
+                                                    id="password-input" v-model="form.password" autocomplete="password"
+                                                    required :class="{ 'is-invalid': form.errors.password }">
+                                                <button
+                                                    class="btn position-absolute end-0 top-0 text-decoration-none text-muted"
+                                                    type="button" id="password-addon"
+                                                    @click="togglePassword = !togglePassword">
+                                                    <i class="ri-eye-fill align-middle"></i>
+                                                </button>
+                                                <InputError :message="form.errors.password" />
+                                            </div>
+                                        </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                    Forgot your password?
-                </Link>
+                                        <div class="form-check">
+                                            <input type="checkbox" :checked="form.remember"
+                                                @change="() => form.remember = !form.remember" name="remember"
+                                                class="form-check-input" id="auth-remember-check" />
+                                            <label class="form-check-label" for="auth-remember-check">Remember
+                                                me</label>
+                                        </div>
+                                        <div class="mt-4">
+                                            <button class="btn btn-success w-100" type="submit"
+                                                :class="{ 'opacity-25': form.processing }"
+                                                :disabled="form.processing">Sign In</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
 
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </PrimaryButton>
+                        <div class="mt-4 text-center">
+                            <p class="mb-0">Don't have an account ?
+                                <Link :href="route('register')"
+                                    class="fw-semibold text-primary text-decoration-underline"> Signup </Link>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-        </form>
-    </AuthenticationCard>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col col-lg-12">
+                        <div class="text-center">
+                            <p class="mb-0 text-muted">&copy; {{ new Date().getFullYear() }} Velzon. Crafted with <i
+                                    class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
 </template>

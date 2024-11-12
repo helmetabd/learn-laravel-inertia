@@ -1,13 +1,17 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 
 export default defineConfig({
-    plugins: [
+    "plugins": [
         laravel({
-            input: 'resources/js/app.js',
-            ssr: 'resources/js/ssr.js',
-            refresh: true,
+            "input": [
+                "resources/js/app.ts"
+            ],
+            "refresh": true
         }),
         vue({
             template: {
@@ -16,6 +20,13 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
-        }),
+        })
     ],
+    resolve: {
+        alias: {
+            '@assets': '/resources/', // Update this with the correct path to your images
+            '~@assets': '/resources/', // Update this with the correct path to your images
+            '@favicon': '/resources/images/', // Update this with the correct path to your images
+        },
+    },
 });
