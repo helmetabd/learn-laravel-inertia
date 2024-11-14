@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Auth;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -32,10 +33,24 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            'ziggy' => fn () => [
+            'auth' => Auth::user(),
+            'ziggy' => fn() => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+            'layoutValue' => fn() => [
+                'layoutType' => 'vertical',
+                'layoutWidth' => 'fluid',
+                'sidebarSize' => 'lg',
+                'topbar' => 'light',
+                'mode' => 'light',
+                'position' => 'fixed',
+                'sidebarView' => 'default',
+                'sidebarColor' => 'light',
+                'sidebarImage' => 'none',
+                'preloader' => 'disable',
+                'visibility' => 'show'
+            ]
         ];
     }
 }

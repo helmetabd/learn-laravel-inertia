@@ -1,9 +1,6 @@
 <script setup>
 import { ref, reactive, nextTick } from 'vue';
-import DialogModal from './DialogModal.vue';
 import InputError from './InputError.vue';
-import PrimaryButton from './PrimaryButton.vue';
-import SecondaryButton from './SecondaryButton.vue';
 import TextInput from './TextInput.vue';
 
 const emit = defineEmits(['confirmed']);
@@ -38,6 +35,7 @@ const startConfirmingPassword = () => {
         if (response.data.confirmed) {
             emit('confirmed');
         } else {
+            console.log(response)
             confirmingPassword.value = true;
 
             setTimeout(() => passwordInput.value.focus(), 250);
@@ -76,43 +74,29 @@ const closeModal = () => {
             <slot />
         </span>
 
-        <DialogModal :show="confirmingPassword" @close="closeModal">
-            <template #title>
-                {{ title }}
-            </template>
+        <BModal v-model="confirmingPassword" :title="title" hide-footer header-class="bg-success-subtle p-3">
+            <p class="text-muted fs-14 mb-3">{{ content }}</p>
+            <div class="mb-3">
+                <TextInput
+                    ref="passwordInput"
+                    v-model="form.password"
+                    type="password"
+                    placeholder="Password"
+                    autocomplete="current-password"
+                    @keyup.enter="confirmPassword"
+                    :class="{ 'is-invalid': form.error }"
+                />
 
-            <template #content>
-                {{ content }}
+                <InputError :message="form.error" class="mt-2" />
+            </div>
 
-                <div class="mt-4">
-                    <TextInput
-                        ref="passwordInput"
-                        v-model="form.password"
-                        type="password"
-                        class="mt-1 block w-3/4"
-                        placeholder="Password"
-                        autocomplete="current-password"
-                        @keyup.enter="confirmPassword"
-                    />
+            <div class="text-end">
+                <BButton variant="danger" @click="closeModal">Cancel</BButton>
+                <BButton variant="success" class="ms-1" :class="{ 'opacity-25': form.processing }"
+                :disabled="form.processing"
+                @click="confirmPassword">{{ button }}</BButton>
+            </div>
 
-                    <InputError :message="form.error" class="mt-2" />
-                </div>
-            </template>
-
-            <template #footer>
-                <SecondaryButton @click="closeModal">
-                    Cancel
-                </SecondaryButton>
-
-                <PrimaryButton
-                    class="ms-3"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                    @click="confirmPassword"
-                >
-                    {{ button }}
-                </PrimaryButton>
-            </template>
-        </DialogModal>
+        </BModal>
     </span>
 </template>

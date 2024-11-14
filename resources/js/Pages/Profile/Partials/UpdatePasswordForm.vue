@@ -1,11 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
-import ActionMessage from '@/Components/ActionMessage.vue';
 import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 
 const passwordInput = ref(null);
@@ -38,17 +36,10 @@ const updatePassword = () => {
 </script>
 
 <template>
-    <FormSection @submitted="updatePassword">
-        <template #title>
-            Update Password
-        </template>
 
-        <template #description>
-            Ensure your account is using a long, random password to stay secure.
-        </template>
-
+    <FormSection @submitted="updatePassword" title="Update Password" description="Ensure your account is using a long, random password to stay secure.">
         <template #form>
-            <div class="col-span-6 sm:col-span-4">
+            <div class="mb-3">
                 <InputLabel for="current_password" value="Current Password" />
                 <TextInput
                     id="current_password"
@@ -57,11 +48,12 @@ const updatePassword = () => {
                     type="password"
                     class="mt-1 block w-full"
                     autocomplete="current-password"
+                    :class="{ 'is-invalid': form.errors.current_password }"
                 />
                 <InputError :message="form.errors.current_password" class="mt-2" />
             </div>
 
-            <div class="col-span-6 sm:col-span-4">
+            <div class="mb-3">
                 <InputLabel for="password" value="New Password" />
                 <TextInput
                     id="password"
@@ -70,11 +62,12 @@ const updatePassword = () => {
                     type="password"
                     class="mt-1 block w-full"
                     autocomplete="new-password"
+                    :class="{ 'is-invalid': form.errors.password }"
                 />
                 <InputError :message="form.errors.password" class="mt-2" />
             </div>
 
-            <div class="col-span-6 sm:col-span-4">
+            <div class="mb-3">
                 <InputLabel for="password_confirmation" value="Confirm Password" />
                 <TextInput
                     id="password_confirmation"
@@ -82,19 +75,15 @@ const updatePassword = () => {
                     type="password"
                     class="mt-1 block w-full"
                     autocomplete="new-password"
+                    :class="{ 'is-invalid': form.errors.password_confirmation }"
                 />
                 <InputError :message="form.errors.password_confirmation" class="mt-2" />
             </div>
         </template>
 
         <template #actions>
-            <ActionMessage :on="form.recentlySuccessful" class="me-3">
-                Saved.
-            </ActionMessage>
-
-            <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
-            </PrimaryButton>
+            <BButton variant="success w-100" type="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Save</BButton>
+            <p v-if="form.recentlySuccessful" class="alert alert-success mt-3">Password Updated.</p>
         </template>
     </FormSection>
 </template>
