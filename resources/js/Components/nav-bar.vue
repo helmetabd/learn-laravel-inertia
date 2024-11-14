@@ -20,9 +20,10 @@ import img3 from "@assets/images/products/img-3.png";
 import img4 from "@assets/images/products/img-4.png";
 import img5 from "@assets/images/products/img-5.png";
 import { computed, onMounted, reactive } from "vue";
+import { LayoutValue } from 'resources/interfaces/Utils';
+import { changeMode, changeSidebarSize, changeVisibility } from '../../utils/layoutHelper';
 
 const page = usePage()
-const pages = computed(() => page.props)
 const user = computed(() => page.props.auth) as unknown as { id: string, name: string, email: string, profile_photo_path: string, profile_photo_url: string }
 const logout = () => {
   router.post(route('logout'));
@@ -120,19 +121,7 @@ const state = reactive({
       itemPrice: "990",
     },
   ],
-  layout: {
-    layoutType: 'vertical',
-    layoutWidth: 'fluid',
-    sidebarSize: 'lg',
-    topbar: 'light',
-    mode: 'light',
-    position: 'fixed',
-    sidebarView: 'default',
-    sidebarColor: 'dark',
-    sidebarImage: 'none',
-    preloader: 'disable',
-    visibility: 'show'
-  },
+  layout: page.props.layoutValue as LayoutValue,
   lan: locale || 'en' as "en" | "ar" | "ch" | "fr" | "gr" | "it" | "ru" | "sp" | "id",
   text: null,
   flag: null as string | null,
@@ -181,53 +170,6 @@ function isCustomDropdown() {
     }
   })
 }
-function changeVisibility({ visibility }: { visibility: string }) {
-  state.layout.visibility = visibility
-  switch (visibility) {
-    case 'show':
-      document.documentElement.setAttribute('data-sidebar-visibility', 'show')
-      break
-    case 'hidden':
-      document.documentElement.setAttribute('data-sidebar-visibility', 'hidden')
-      break
-  }
-}
-function changeSidebarSize({ sidebarSize }: { sidebarSize: string }) {
-  state.layout.sidebarSize = sidebarSize
-  switch (sidebarSize) {
-    case '':
-      document.documentElement.setAttribute('data-sidebar-size', '')
-      break
-    case 'sm-hover-active':
-      document.documentElement.setAttribute('data-sidebar-size', 'sm-hover-active')
-      break
-    case 'sm-hover':
-      document.documentElement.setAttribute('data-sidebar-size', 'sm-hover')
-      break
-    case 'sm':
-      document.documentElement.setAttribute('data-sidebar-size', 'sm')
-      break
-    case 'md':
-      document.documentElement.setAttribute('data-sidebar-size', 'md')
-      break
-    case 'lg':
-      document.documentElement.setAttribute('data-sidebar-size', 'lg')
-      break
-  }
-}
-function changeMode() {
-  const documentMode = document.documentElement.getAttribute('data-bs-theme')
-  if (documentMode === 'dark') {
-    document.documentElement.setAttribute('data-bs-theme', 'light')
-    document.documentElement.setAttribute('data-sidebar', 'light')
-    state.layout.sidebarColor = 'light'
-  } else {
-    document.documentElement.setAttribute('data-bs-theme', 'dark')
-    document.documentElement.setAttribute('data-sidebar', 'dark')
-    state.layout.sidebarColor = 'dark'
-  }
-  state.layout.mode = document.documentElement.getAttribute('data-bs-theme') || 'light'
-}
 function toggleHamburgerMenu() {
   var windowSize = document.documentElement.clientWidth
   let layoutType = state.layout.layoutType
@@ -246,18 +188,20 @@ function toggleHamburgerMenu() {
       : document.body.classList.add('menu')
   }
 
+  console.log('called')
   //For collapse vertical menu
   if (visiblilityType === 'show' && (layoutType === 'vertical' || layoutType === 'semibox')) {
     if (windowSize < 1025 && windowSize > 767) {
       document.body.classList.remove('vertical-sidebar-enable')
       state.layout.sidebarSize == 'sm'
-        ? changeSidebarSize({ sidebarSize: 'lg' })
-        : changeSidebarSize({ sidebarSize: 'sm' })
+      ? changeSidebarSize({ sidebarSize: 'lg' })
+      : changeSidebarSize({ sidebarSize: 'sm' })
     } else if (windowSize > 1025) {
       document.body.classList.remove('vertical-sidebar-enable')
       state.layout.sidebarSize == 'lg'
-        ? changeSidebarSize({ sidebarSize: 'sm' })
-        : changeSidebarSize({ sidebarSize: 'lg' })
+      ? changeSidebarSize({ sidebarSize: 'sm' })
+      : changeSidebarSize({ sidebarSize: 'lg' })
+      console.log(page.props.layoutValue)
     } else if (windowSize <= 767) {
       document.body.classList.add('vertical-sidebar-enable')
       changeSidebarSize({ sidebarSize: 'lg' })
@@ -339,7 +283,7 @@ onMounted(() => {
           </div>
 
           <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
-            id="topnav-hamburger-icon" @click="toggleHamburgerMenu">
+            id="topnav-hamburger-icon">
             <span class="hamburger-icon">
               <span></span>
               <span></span>
@@ -445,32 +389,35 @@ onMounted(() => {
               <i class="bx bx-moon fs-22"></i>
             </button>
           </div>
-          <!-- {{ user }} -->
-          <div class="dropdown ms-sm-3 header-item topbar-user" toggle-class="rounded-circle arrow-none"
-            menu-class="dropdown-menu-end" :offset="{ alignmentAxis: -14, crossAxis: 0, mainAxis: 0 }">
-            <span class="d-flex align-items-center">
-              <img v-if="user" class="rounded-circle header-profile-user" :src="user.profile_photo_url"
-                :alt="user.name">
-              <span class="text-start ms-xl-2">
-                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ user.name
-                  }}</span>
-                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Founder</span>
+          <div class="btn-group ms-sm-3 header-item topbar-user dropdown">
+            <button class="btn btn-md btn-link rounded-circle arrow-none dropdown-toggle" type="button"
+              aria-expanded="false" data-bs-toggle="dropdown">
+              <span class="d-flex align-items-center">
+                <img v-if="user" class="rounded-circle header-profile-user" :src="user.profile_photo_url"
+                  :alt="user.name">
+                <span class="text-start ms-xl-2">
+                  <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ user.name
+                    }}</span>
+                  <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Founder</span>
+                </span>
               </span>
-            </span>
-            <h6 class="dropdown-header">Welcome {{ user.name }}!</h6>
-            <Link class="dropdown-item" :href="route('profile.show')"><i
-              class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
-            <span class="align-middle">Profile</span>
-            </Link>
-            <Link class="dropdown-item" href="/pages/profile-setting">
-            <span class="bg-success-subtle text-success mt-1 float-end">New</span><i
-              class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>
-            <span class="align-middle"> Settings</span>
-            </Link>
-            <form method="POST" @submit.prevent="logout" class="dropdown-item">
-              <button type="submit" class="btn p-0"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
-                Logout</button>
-            </form>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+              <h6 class="dropdown-header">Welcome {{ user.name }}!</h6>
+              <Link class="dropdown-item" :href="route('profile.show')"><i
+                class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
+              <span class="align-middle">Profile</span>
+              </Link>
+              <Link class="dropdown-item" href="/pages/profile-setting">
+              <span class="bg-success-subtle text-success mt-1 float-end">New</span><i
+                class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>
+              <span class="align-middle"> Settings</span>
+              </Link>
+              <form method="POST" @submit.prevent="logout" class="dropdown-item">
+                <button type="submit" class="btn p-0"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
+                  Logout</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>

@@ -21,21 +21,20 @@ const hasActions = computed(() => !!useSlots().actions);
     <div class="">
         <div class="">
             <form @submit.prevent="$emit('submitted')">
-                <BCard no-body>
-                    <BCardHeader>
-                        <BCardTitle>{{ title }}</BCardTitle>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">{{ title }}</div>
                         <p class="text-muted mb-0">{{ description }}</p>
-                    </BCardHeader>
-                    <BCardBody class="p-4">
+                    </div>
+                    <div class="card-body p-4">
                         <div class="mb-3">
                             <slot name="form" />
                         </div>
                         <div v-if="hasActions">
                             <slot name="actions" />
                         </div>
-                    </BCardBody>
-                </BCard>
-
+                    </div>
+                </div>
             </form>
         </div>
     </div>

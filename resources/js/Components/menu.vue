@@ -1,29 +1,13 @@
 <script setup lang="ts">
-import { Link, router } from '@inertiajs/vue3';
-import { layoutComputed } from "@/state/helpers";
-import simplebar from "simplebar-vue";
-import { computed, onMounted, reactive } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
+import { onMounted, reactive } from 'vue';
+import { LayoutValue } from 'resources/interfaces/Utils';
 
+const layout = usePage().props.layoutValue as LayoutValue
 const state = reactive({
   settings: {
     minScrollbarLength: 60,
   },
-  layout: {
-    layoutType: 'vertical',
-    layoutWidth: 'fluid',
-    sidebarSize: 'lg',
-    topbar: 'light',
-    mode: 'light',
-    position: 'fixed',
-    sidebarView: 'default',
-    sidebarColor: 'dark',
-    sidebarImage: 'none',
-    preloader: 'disable',
-    visibility: 'show'
-  },
-})
-const layoutType = computed(() => {
-  return state.layout.layoutType
 })
 onMounted(() => {
   initActiveMenu()
@@ -97,7 +81,6 @@ onMounted(() => {
   }
 })
 function onRoutechange() {
-  // this.initActiveMenu();
   setTimeout(() => {
     var currentPath = window.location.pathname;
     if (document.querySelector("#navbar-nav")) {
@@ -142,7 +125,7 @@ function initActiveMenu() {
   <div class="container-fluid">
     <div id="two-column-menu"></div>
 
-    <template v-if="state.layout.layoutType === 'vertical' || state.layout.layoutType === 'semibox'">
+    <template v-if="layout.layoutType === 'vertical' || layout.layoutType === 'semibox'">
       <ul class="navbar-nav h-100" id="navbar-nav">
         <li class="menu-title">
           <span data-key="t-menu"> {{ $t("t-menu") }}</span>

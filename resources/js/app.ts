@@ -12,14 +12,15 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/src/js';
 import AOS from "aos";
 import i18n from './i18n'
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+// const appName = import.meta.env.VITE_APP_NAME || 'Base Genit';
+const appName = 'Base Genit';
 AOS.init({
     easing: 'ease-out-back',
     duration: 1000
 })
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => title ? `${title} - ${appName}` : `${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob<DefineComponent>('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })

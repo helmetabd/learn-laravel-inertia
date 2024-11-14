@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 // import router from "@/router";
 import simplebar from "simplebar-vue";
 // import { layoutComputed } from "@/state/helpers";
@@ -9,25 +9,15 @@ import Menu from "@/Components/menu.vue";
 import RightBar from "@/Components/right-bar.vue";
 import Footer from "@/Components/footer.vue";
 import { onMounted, reactive } from 'vue';
-localStorage.setItem('hoverd', 'false');
+import { LayoutValue } from 'resources/interfaces/Utils';
+sessionStorage.setItem('hoverd', 'false');
 /**
  * Vertical layout
  */
+const page = usePage()
 const state = reactive({
   isMenuCondensed: false,
-  layout: {
-    layoutType: 'vertical',
-    layoutWidth: 'fluid',
-    sidebarSize: 'lg',
-    topbar: 'light',
-    mode: 'light',
-    position: 'fixed',
-    sidebarView: 'default',
-    sidebarColor: 'dark',
-    sidebarImage: 'none',
-    preloader: 'disable',
-    visibility: 'show'
-  }
+  layout: page.props.layoutValue as LayoutValue
 })
 
 document.body.removeAttribute("data-layout");
@@ -36,10 +26,10 @@ document.body.removeAttribute("data-layout-size");
 
 function initActiveMenu() {
   if (document.documentElement.getAttribute('data-sidebar-size') === 'sm-hover') {
-    localStorage.setItem('hoverd', 'true');
+    sessionStorage.setItem('hoverd', 'true');
     document.documentElement.setAttribute('data-sidebar-size', 'sm-hover-active');
   } else if (document.documentElement.getAttribute('data-sidebar-size') === 'sm-hover-active') {
-    localStorage.setItem('hoverd', 'false');
+    sessionStorage.setItem('hoverd', 'false');
     document.documentElement.setAttribute('data-sidebar-size', 'sm-hover');
   } else {
     document.documentElement.setAttribute('data-sidebar-size', 'sm-hover');
@@ -47,14 +37,11 @@ function initActiveMenu() {
 }
 function toggleMenu() {
   document.body.classList.toggle("sidebar-enable");
-
   if (window.screen.width >= 992) {
-    // eslint-disable-next-line no-unused-vars
     document.body.classList.remove("sidebar-enable");
     document.body.classList.remove("vertical-collpsed");
     document.body.classList.toggle("vertical-collpsed");
   } else {
-    // eslint-disable-next-line no-unused-vars
     document.body.classList.remove("sidebar-enable");
     document.body.classList.remove("vertical-collpsed");
   }
@@ -67,11 +54,9 @@ function hideRightSidebar() {
   document.body.classList.remove("right-bar-enabled");
 }
 onMounted(() => {
-
-  if (localStorage.getItem('hoverd') == 'true') {
+  if (sessionStorage.getItem('hoverd') == 'true') {
     document.documentElement.setAttribute('data-sidebar-size', 'sm-hover-active');
   }
-
   document.getElementById('overlay')?.addEventListener('click', () => {
     document.body.classList.remove('vertical-sidebar-enable');
   });
@@ -133,6 +118,6 @@ onMounted(() => {
       </div>
       <Footer />
     </div>
-    <!-- <RightBar /> -->
+    <RightBar />
   </div>
 </template>
