@@ -75,6 +75,7 @@
     "t-two-column": "dos columnas",
     "t-hovered": "flotando",
     "t-pages": "Paginas",
+    "t-modules": "módulos",
     "t-authentication": "Autenticación",
     "t-signin": "Iniciar sesión",
     "t-basic": "Básico",
@@ -207,5 +208,7 @@
     "t-level-2.1": "Nivel 2.1",
     "t-level-2.2": "Nivel 2.2",
     "t-level-3.1": "Nivel 3.1",
-    "t-level-3.2": "Nivel 3.2"
+    "t-level-3.2": "Nivel 3.2",
+    "t-user": "Usuario",
+    "t-user-logs": "Registros de Usuario"
 }

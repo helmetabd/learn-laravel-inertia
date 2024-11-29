@@ -9,7 +9,9 @@ import { createApp, h, DefineComponent } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/src/js';
+import { loadSlim } from '@tsparticles/slim'
 import AOS from "aos";
+import Particles from '@tsparticles/vue3'
 import i18n from './i18n'
 
 // const appName = import.meta.env.VITE_APP_NAME || 'Base Genit';
@@ -27,6 +29,11 @@ createInertiaApp({
             .use(plugin)
             .use(i18n)
             .use(ZiggyVue, Ziggy)
+            .use(Particles, {
+                init: async (engine) => {
+                    await loadSlim(engine) // you can load the full tsParticles library from "tsparticles" if you need it
+                }
+            })
             .mount(el);
     }, progress: {
         color: '#4B5563',

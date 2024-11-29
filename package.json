@@ -18,6 +18,8 @@
     },
     "dependencies": {
         "@popperjs/core": "^2.11.8",
+        "@tsparticles/slim": "^3.6.0",
+        "@tsparticles/vue3": "^3.0.1",
         "@types/aos": "^3.0.7",
         "@types/bootstrap": "^5.2.10",
         "@zhuowenli/vue-feather-icons": "^5.0.2",

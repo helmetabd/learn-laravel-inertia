@@ -1,14 +1,112 @@
-<script setup>
+<script setup lang="ts">
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import Checkbox from '@/Components/Checkbox.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { reactive } from 'vue';
 
 defineProps({
     canResetPassword: Boolean,
     status: String,
 });
+
+const state = reactive({
+    particleConfig: {
+        particles: {
+            number: {
+                value: 100,
+                density: {
+                    enable: true,
+                    value_area: 1000
+                }
+            },
+            color: {
+                value: '#ffffff'
+            },
+            shape: {
+                type: 'circle',
+                stroke: {
+                    width: 0,
+                    color: '#000000'
+                },
+                polygon: {
+                    nb_sides: 5
+                },
+                image: {
+                    src: 'img/github.svg',
+                    width: 100,
+                    height: 100
+                }
+            },
+            opacity: {
+                value: 0.5,
+                random: false,
+                anim: {
+                    enable: false,
+                    speed: 1,
+                    opacity_min: 0.1,
+                    sync: false
+                }
+            },
+            size: {
+                value: 4,
+                random: true,
+                anim: {
+                    enable: false,
+                    speed: 40,
+                    size_min: 0.1,
+                    sync: false
+                }
+            },
+            line_linked: {
+                enable: true,
+                distance: 130,
+                color: '#ffffff',
+                opacity: 0.4,
+                width: 1
+            },
+            move: {
+                enable: true,
+                speed: 3,
+                direction: 'top',
+                random: true,
+                straight: false,
+                out_mode: 'out',
+                bounce: false,
+                attract: {
+                    enable: false,
+                    rotateX: 600,
+                    rotateY: 1200
+                }
+            }
+        },
+        interactivity: {
+            detect_on: 'window',
+            events: {
+                onhover: {
+                    enable: true,
+                    mode: 'grab'
+                },
+                onclick: {
+                    enable: false,
+                    mode: 'push'
+                },
+                resize: true
+            },
+            modes: {
+                grab: {
+                    distance: 400,
+                    line_linked: {
+                        opacity: 1
+                    }
+                }
+            }
+        },
+        retina_detect: true
+    },
+    togglePassword: false
+})
 
 const form = useForm({
     email: 'test@example.com',
@@ -26,24 +124,13 @@ const submit = () => {
 };
 </script>
 
-<script>
-export default {
-    data() {
-        return {
-            togglePassword: false
-        }
-    }
-}
-</script>
-
 <template>
 
     <Head title="Log in" />
 
     <div class="auth-page-wrapper pt-5">
         <div class="auth-one-bg-position auth-one-bg" id="auth-particles">
-            <div class="bg-overlay"></div>
-
+            <vue-particles id="tsparticles" class="bg-overlay" :options="state.particleConfig" />
             <div class="shape">
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                     viewBox="0 0 1440 120">
@@ -73,7 +160,7 @@ export default {
                             <div class="p-4">
                                 <div class="text-center mt-2">
                                     <h5 class="text-primary">Welcome Back !</h5>
-                                    <p class="text-muted">Sign in to continue to Velzon.</p>
+                                    <p class="text-muted">Sign in to continue to Genit Base.</p>
                                 </div>
                                 <div v-if="status" class="alert alert-success text-success">
                                     {{ status }}
@@ -96,14 +183,14 @@ export default {
                                             </div>
                                             <InputLabel for="password" value="Password" />
                                             <div class="position-relative auth-pass-inputgroup mb-3">
-                                                <input :type="togglePassword ? 'text' : 'password'"
+                                                <input :type="state.togglePassword ? 'text' : 'password'"
                                                     class="form-control pe-5" placeholder="Enter password"
                                                     id="password-input" v-model="form.password" autocomplete="password"
                                                     required :class="{ 'is-invalid': form.errors.password }">
                                                 <button
                                                     class="btn position-absolute end-0 top-0 text-decoration-none text-muted"
                                                     type="button" id="password-addon"
-                                                    @click="togglePassword = !togglePassword">
+                                                    @click="state.togglePassword = !state.togglePassword">
                                                     <i class="ri-eye-fill align-middle"></i>
                                                 </button>
                                                 <InputError :message="form.errors.password" />
@@ -119,8 +206,9 @@ export default {
                                         </div>
                                         <div class="mt-4">
                                             <button class="btn btn-success w-100" type="submit"
-                                                :class="{ 'opacity-25': form.processing }"
-                                                :disabled="form.processing">Sign In</button>
+                                                :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                                                {{ form.processing ? 'Please wait' : 'Sign In' }}
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -144,8 +232,8 @@ export default {
                 <div class="row">
                     <div class="col col-lg-12">
                         <div class="text-center">
-                            <p class="mb-0 text-muted">&copy; {{ new Date().getFullYear() }} Velzon. Crafted with <i
-                                    class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                            <p class="mb-0 text-muted">&copy; {{ new Date().getFullYear() }} Genit Base. Crafted with <i
+                                    class="mdi mdi-heart text-danger"></i> by IT GBNA</p>
                         </div>
                     </div>
                 </div>

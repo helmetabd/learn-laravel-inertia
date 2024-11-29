@@ -31,13 +31,13 @@
 }
 
 .auth-one-bg{
-    background-image: url("@assets/images/auth-one-bg.jpg");
+    background-image: url("@assets/images/login_bg_result.webp");
     background-position: center;
     background-size: cover;
 
     .bg-overlay{
-        background: linear-gradient(to right, darken($primary, 6%), $primary);
-        opacity: 0.9;
+        background: linear-gradient(to right, darken($primary, 70%), $primary);
+        opacity: 0.6;
     }
 }
 

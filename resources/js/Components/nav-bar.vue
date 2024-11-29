@@ -188,20 +188,18 @@ function toggleHamburgerMenu() {
       : document.body.classList.add('menu')
   }
 
-  console.log('called')
   //For collapse vertical menu
   if (visiblilityType === 'show' && (layoutType === 'vertical' || layoutType === 'semibox')) {
     if (windowSize < 1025 && windowSize > 767) {
       document.body.classList.remove('vertical-sidebar-enable')
       state.layout.sidebarSize == 'sm'
-      ? changeSidebarSize({ sidebarSize: 'lg' })
-      : changeSidebarSize({ sidebarSize: 'sm' })
+        ? changeSidebarSize({ sidebarSize: 'lg' })
+        : changeSidebarSize({ sidebarSize: 'sm' })
     } else if (windowSize > 1025) {
       document.body.classList.remove('vertical-sidebar-enable')
       state.layout.sidebarSize == 'lg'
-      ? changeSidebarSize({ sidebarSize: 'sm' })
-      : changeSidebarSize({ sidebarSize: 'lg' })
-      console.log(page.props.layoutValue)
+        ? changeSidebarSize({ sidebarSize: 'sm' })
+        : changeSidebarSize({ sidebarSize: 'lg' })
     } else if (windowSize <= 767) {
       document.body.classList.add('vertical-sidebar-enable')
       changeSidebarSize({ sidebarSize: 'lg' })

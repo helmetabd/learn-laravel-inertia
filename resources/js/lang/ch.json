@@ -75,6 +75,7 @@
     "t-two-column": "两列",
     "t-hovered": "悬停",
     "t-pages": "页面",
+    "t-modules": "模块",
     "t-authentication": "验证",
     "t-signin": "登入",
     "t-basic": "基本的",
@@ -207,5 +208,7 @@
     "t-level-2.1": "2.1级",
     "t-level-2.2": "2.2级",
     "t-level-3.1": "3.1级",
-    "t-level-3.2": "3.2级"
+    "t-level-3.2": "3.2级",
+    "t-user": "用户",
+    "t-user-logs": "用户日志"
 }

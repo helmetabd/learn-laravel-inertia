@@ -75,6 +75,7 @@
     "t-two-column": "Zweispaltig",
     "t-hovered": "Schwebte",
     "t-pages": "Seiten",
+    "t-modules": "Module",
     "t-authentication": "Authentifizierung",
     "t-signin": "Anmelden",
     "t-basic": "Basic",
@@ -207,5 +208,7 @@
     "t-level-2.1": "Stufe 2.1",
     "t-level-2.2": "Stufe 2.2",
     "t-level-3.1": "Stufe 3.1",
-    "t-level-3.2": "Stufe 3.2"
+    "t-level-3.2": "Stufe 3.2",
+    "t-user": "Benutzer",
+    "t-user-logs": "Benutzerprotokolle"
 }
