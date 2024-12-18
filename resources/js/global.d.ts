@@ -8,15 +8,15 @@ declare global {
         axios: AxiosInstance;
     }
 
-    var route: typeof ziggyRoute;
+    // var route: typeof ziggyRoute;
     var Ziggy: ZiggyConfig;
 }
 
-declare module 'vue' {
-    interface ComponentCustomProperties {
-        route: typeof ziggyRoute;
-    }
-}
+// declare module 'vue' {
+//     interface ComponentCustomProperties {
+//         route: typeof ziggyRoute;
+//     }
+// }
 
 declare module '@inertiajs/core' {
     interface PageProps extends InertiaPageProps, AppPageProps {}

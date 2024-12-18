@@ -3,6 +3,7 @@ import { Link, usePage } from '@inertiajs/vue3';
 import { onMounted, reactive } from 'vue';
 import { AuthUser, LayoutValue, Menu } from 'resources/interfaces/Utils';
 import menu from '@/common/data/menu';
+import { route } from 'ziggy-js'
 
 const layout = usePage().props.layoutValue as LayoutValue
 const user = usePage().props.auth as AuthUser
@@ -161,10 +162,10 @@ function initActiveMenu() {
             <i :class="menu.icon"></i>
             <span>{{ $t(menu.display_name) }}</span>
           </a>
-          <router-link v-if="!menu.caret" v-show="checkAuth(menu.module)" :to="{ name: menu.route }" class="nav-link"
-            data-key="t-simple-page">
-            {{ $t(menu.display_name) }}
-          </router-link>
+          <Link v-if="!menu.caret && menu.route" v-show="checkAuth(menu.module)" :href="route(menu.route)"
+            class="nav-link" data-key="t-simple-page">
+          {{ $t(menu.display_name) }}
+          </Link>
           <div v-if="menu.caret" class="collapse menu-dropdown" :id="menu.name" v-show="checkAuth(menu.module)">
             <ul class="nav nav-sm flex-column">
               <li v-for="child in menu.childs" :key="child.name" class="nav-item">
@@ -173,18 +174,18 @@ function initActiveMenu() {
                   :aria-controls="child.name">
                   <span>{{ $t(child.display_name) }}</span>
                 </a>
-                <router-link v-if="!child.caret" v-show="checkAuth(child.module)" :to="{ name: child.route }"
+                <Link v-if="!child.caret && child.route" v-show="checkAuth(child.module)" :href="route(child.route)"
                   class="nav-link" data-key="t-simple-page">
-                  {{ $t(child.display_name) }}
-                </router-link>
+                {{ $t(child.display_name) }}
+                </Link>
                 <div v-if="child.caret" v-show="checkAuth(child.module)" class="collapse menu-dropdown"
                   :id="child.name">
                   <ul class="nav nav-sm flex-column">
                     <li v-for="grandChild in child.childs" :key="grandChild.name" class="nav-item">
-                      <router-link :to="{ name: grandChild.route }" v-show="checkAuth(grandChild.module)"
-                        class="nav-link" data-key="t-simple-page">
-                        {{ $t(grandChild.display_name) }}
-                      </router-link>
+                      <Link v-if="grandChild.route" :href="route(grandChild.route)"
+                        v-show="checkAuth(grandChild.module)" class="nav-link" data-key="t-simple-page">
+                      {{ $t(grandChild.display_name) }}
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -198,11 +199,16 @@ function initActiveMenu() {
           <span>SYSTEMS</span>
         </li>
         <li v-for="menu in state.menus" :key="menu.name" class="nav-item">
-          <router-link v-if="menu.type == 'system' && menu.auth_level_min == 1" v-show="checkSU()"
+          <Link v-if="menu.type == 'system' && menu.auth_level_min == 1" v-show="checkSU()"
+            :href="route(menu.route ?? '')" class="nav-link" data-key="t-simple-page" activeClass="text-primary"><i
+            :class="menu.icon"></i>
+          <span>{{ $t(menu.display_name) }}</span>
+          </Link>
+          <!-- <router-link v-if="menu.type == 'system' && menu.auth_level_min == 1" v-show="checkSU()"
             :to="{ name: menu.route }" class="nav-link" data-key="t-simple-page" activeClass="text-primary">
             <i :class="menu.icon"></i>
             <span>{{ $t(menu.display_name) }}</span>
-          </router-link>
+          </router-link> -->
         </li>
       </ul>
 

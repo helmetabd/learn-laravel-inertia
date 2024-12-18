@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import Layout from "@/Layouts/main.vue";
 import PageHeader from "@/Components/page-header.vue";
 // const data = {
@@ -97,7 +97,7 @@ import PageHeader from "@/Components/page-header.vue";
 
 <template>
   <Layout>
-    <Head title="Starter" />
-    <PageHeader title="Starter" pageTitle="Pages" />
+    <Head title="Dashboard" />
+    <PageHeader title="Dashboard" pageTitle="Pages" />
   </Layout>
 </template>

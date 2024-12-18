@@ -28,6 +28,7 @@ export default defineConfig({
             '@assets': '/resources/', // Update this with the correct path to your images
             '~@assets': '/resources/', // Update this with the correct path to your images
             '@favicon': '/resources/images/', // Update this with the correct path to your images
+            // 'ziggy-js': path.resolve('vendor/tightenco/ziggy'),
         },
     },
 });
