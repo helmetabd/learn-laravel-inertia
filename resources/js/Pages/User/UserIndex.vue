@@ -28,7 +28,6 @@ interface Props {
 }
 // const router = useRouter()
 const props = defineProps<Props>()
-console.log(props)
 
 const state = reactive({
   url: 'users.index',
@@ -222,11 +221,11 @@ async function clear() {
 
 // getProjects()
 
-watch(() => state.tableData, (newValue, oldValue) => {
-  if (newValue != oldValue) {
-    router.get(route('users.index'), state.tableData, { replace: true, preserveState: true })
-  }
-}, { deep: true, immediate: true })
+// watch(() => state.tableData, (newValue, oldValue) => {
+//   if (newValue != oldValue) {
+//     router.get(route('users.index'), state.tableData, { replace: true, preserveState: true })
+//   }
+// }, { deep: true, immediate: true })
 
 </script>
 

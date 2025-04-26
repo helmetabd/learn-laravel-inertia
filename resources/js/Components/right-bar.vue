@@ -1,6 +1,5 @@
 <script setup lang="ts">
 sessionStorage.setItem("rightbar_isopen", 'false');
-import { layoutMethods, layoutComputed } from "@/state/helpers";
 import simplebar from "simplebar-vue";
 import { computed, onMounted, reactive, watch } from "vue";
 import { changeLayoutType, changeLayoutWidth, changeMode, changePosition, changePreloader, changeSidebarColor, changeSidebarImage, changeSidebarSize, changeSidebarView, changeTopbar, changeVisibility } from "../../utils/layoutHelper"

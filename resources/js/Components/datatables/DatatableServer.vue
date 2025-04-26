@@ -117,7 +117,6 @@ const getProjects = (url = state.tableUrl) => {
     if (state.tableParam && Object.keys(state.tableParam).length) {
         par = { ...state.tableParam, ...state.tableData }
     }
-    // changeRoute(par)
     state.loadingState = true
     emit('changeURL', par)
     emit('toggle', false)
@@ -129,21 +128,6 @@ const getProjects = (url = state.tableUrl) => {
     }
     state.loadingState = false
     emit('toggle', true)
-    // utilsService
-    //     .fetchIndex(url, par)
-    //     .then((res) => {
-    //         state.projects = res.data
-    //         state.pagination = res.pagination
-    //         if (state.pagination.total == 0) {
-    //             emit('toggleExport', false)
-    //         } else {
-    //             emit('toggleExport', true)
-    //         }
-    //     })
-    //     .finally(() => {
-    //         state.loadingState = false
-    //         emit('toggle', true)
-    //     })
 }
 const formatDate = (
     date: MomentInput,
